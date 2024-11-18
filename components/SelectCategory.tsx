@@ -1,51 +1,7 @@
 import { useOutsideClick } from "@/hooks/useOutsideClick";
+import { Category, categories } from "@/lib/data";
 import { ChevronRight } from "lucide-react";
 import React, { useState } from "react";
-
-interface SubCategory {
-  label: string;
-  value: string;
-  level: number;
-}
-
-interface Category {
-  label: string;
-  value: string;
-  level: number;
-  subCategories?: SubCategory[];
-}
-
-const categories: Category[] = [
-  {
-    label: "Avatars",
-    value: "avatars",
-    level: 0,
-    subCategories: [
-      { label: "Human-like", value: "humanLike", level: 1 },
-      { label: "Antro & Furry", value: "antroAndFurry", level: 1 },
-      { label: "Robot and Cybrogs", value: "robotAndCybrogs", level: 1 },
-      { label: "Others", value: "others", level: 1 },
-      { label: "All in Avatars", value: "allInAvatars", level: 1 },
-    ],
-  },
-  {
-    label: "Fashion",
-    value: "fashion",
-    level: 0,
-    subCategories: [
-      { label: "Cloths", value: "cloths", level: 1 },
-      { label: "Accessories", value: "accessories", level: 1 },
-      { label: "Others", value: "others", level: 1 },
-      { label: "All in Avatars", value: "allInAvatars", level: 1 },
-    ],
-  },
-  {
-    label: "All",
-    value: "all",
-    level: 0,
-    subCategories: [],
-  },
-];
 
 interface IItem {
   category: Category;
@@ -57,7 +13,7 @@ function Item({ category, path, onClick }: IItem) {
   return (
     <li
       key={category.value}
-      onClick={() => onClick(0, category.value)}
+      onClick={() => onClick(category.level, category.value)}
       className={`${
         path[category.level] === category.value ? "bg-[#655d5e] rounded-full" : ""
       } px-4 py-2 cursor-pointer flex justify-between w-[200px]`}
@@ -67,23 +23,21 @@ function Item({ category, path, onClick }: IItem) {
   );
 }
 
-function SelectCategory() {
+function SelectCategory({
+  select,
+  onSelect,
+}: {
+  select: string[];
+  onSelect: (level: number, value: string) => void;
+}) {
   const [showCat, setShowCat] = useState(false);
-  const [categoryPath, setCategoryPath] = useState(["all"]);
   const selectRef = useOutsideClick(() => {
     setShowCat(false);
   });
   function handleClick() {
     setShowCat(true);
   }
-  function handleCategoryChange(level: number, value: string) {
-    setCategoryPath((prev) => {
-      const prevCp = [...prev];
-      prevCp[level!] = value;
-      console.log(prevCp);
-      return prevCp;
-    });
-  }
+
   return (
     <div
       ref={selectRef}
@@ -91,33 +45,25 @@ function SelectCategory() {
     >
       <div onClick={handleClick} className="ml-10 mt-2">
         <label className="text-sm text-secondary font-bold block">Keyword</label>
-        <p className="text-lg text-secondary">All</p>
+        <p className="text-lg text-secondary">
+          {`${select[0]} ${select[1] ? ">" : ""} ${select[1] || ""}` || "All"}
+        </p>
       </div>
       <div
-        className={`absolute flex text-foreground rounded-[32px] min-w-[444px] min-h-[352px] bg-[#443e3e] mt-5 p-[1rem] transition-all  ease-linear ${
+        className={`absolute z-10 shadow-md flex text-foreground rounded-[32px] min-w-[444px] min-h-[352px] bg-[#443e3e] mt-5 p-[1rem] transition-all  ease-linear ${
           showCat ? "opacity-100" : "opacity-0"
         }`}
       >
         <ul>
           {categories.map((cat) => (
-            <Item
-              key={cat.value}
-              category={cat}
-              path={categoryPath}
-              onClick={handleCategoryChange}
-            />
+            <Item key={cat.value} category={cat} path={select} onClick={onSelect} />
           ))}
         </ul>
         <ul>
           {categories
-            .find((cat) => cat.value === categoryPath[0])
+            .find((cat) => cat.value === select[0])
             ?.subCategories?.map((cat) => (
-              <Item
-                key={cat.value}
-                category={cat}
-                path={categoryPath}
-                onClick={handleCategoryChange}
-              />
+              <Item key={cat.value} category={cat} path={select} onClick={onSelect} />
             ))}
         </ul>
       </div>

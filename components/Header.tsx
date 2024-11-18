@@ -8,8 +8,10 @@ import Link from "next/link";
 function Header() {
   return (
     <nav className="flex p-3 items-center justify-between mx-[16px] sm:mx-[40px] md:mx-[80px]">
-      <div className="text-5xl font-bold tracking-tight">
-        <Logo />
+      <div className="ml-[-10px]">
+        <Link href={"/marketplace"}>
+          <Logo className="" />
+        </Link>
       </div>
       <div className="flex items-center gap-3">
         <SearchWithCategory />
