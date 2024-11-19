@@ -1,5 +1,6 @@
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { Category, categories } from "@/lib/data";
+import { getCategoryLabels } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
 import React, { useState } from "react";
 
@@ -37,21 +38,24 @@ function SelectCategory({
   function handleClick() {
     setShowCat(true);
   }
-
+  const selectedCategory = getCategoryLabels(select);
   return (
     <div
       ref={selectRef}
-      className={`rounded-full text-secondary w-[300px] ${showCat ? "bg-[#443e3e]" : ""}`}
+      className={`rounded-full text-secondary w-[44vw] sm:w-[18vw] ${
+        showCat ? "bg-[#443e3e]" : ""
+      }`}
     >
-      <div onClick={handleClick} className="ml-10 mt-2">
-        <label className="text-sm text-secondary font-bold block">Keyword</label>
-        <p className="text-lg text-secondary">
-          {`${select[0]} ${select[1] ? ">" : ""} ${select[1] || ""}` || "All"}
+      <div onClick={handleClick} className="ml-3 sm:ml-10 mt-1">
+        <label className="text-xs text-secondary font-bold block">Keyword</label>
+        <p className="text text-secondary mt-[0.5px] text-ellipsis overflow-hidden whitespace-nowrap w-[27vw] sm:w-[10vw]">
+          {`${selectedCategory[0]} ${selectedCategory[1] ? "> " + selectedCategory[1] : ""}` ||
+            "All"}
         </p>
       </div>
       <div
-        className={`absolute z-10 shadow-md flex text-foreground rounded-[32px] min-w-[444px] min-h-[352px] bg-[#443e3e] mt-5 p-[1rem] transition-all  ease-linear ${
-          showCat ? "opacity-100" : "opacity-0"
+        className={`absolute z-10 shadow-md flex flex-col sm:flex-row text-foreground rounded-[32px] min-h-[352px] bg-[#443e3e] mt-5 p-[1rem] transition-all  ease-linear ${
+          showCat ? "opacity-100 right-1 min-w-[260px] sm:min-w-[444px]" : "opacity-0 min-w-0 w-0"
         }`}
       >
         <ul>
@@ -59,13 +63,15 @@ function SelectCategory({
             <Item key={cat.value} category={cat} path={select} onClick={onSelect} />
           ))}
         </ul>
-        <ul>
-          {categories
-            .find((cat) => cat.value === select[0])
-            ?.subCategories?.map((cat) => (
-              <Item key={cat.value} category={cat} path={select} onClick={onSelect} />
-            ))}
-        </ul>
+        <div className="ml-7 border-t border-gray-700">
+          <ul>
+            {categories
+              .find((cat) => cat.value === select[0])
+              ?.subCategories?.map((cat) => (
+                <Item key={cat.value} category={cat} path={select} onClick={onSelect} />
+              ))}
+          </ul>
+        </div>
       </div>
     </div>
   );

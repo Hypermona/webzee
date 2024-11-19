@@ -79,7 +79,7 @@ export const products: Product[] = [
   },
   {
     id: 4,
-    productName: "Mystery Avatar Collection",
+    productName: "Mystery Avatar Coll..",
     creatorName: "MysticMaker",
     rating: 4.6,
     price: 29.99,
@@ -111,7 +111,7 @@ export const products: Product[] = [
   },
   {
     id: 8,
-    productName: "Miscellaneous Fashion Items",
+    productName: "Miscellaneous Fashion..",
     creatorName: "TrendyMix",
     rating: 4.2,
     price: 19.99,

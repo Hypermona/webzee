@@ -18,16 +18,19 @@ function SearchWithCategory() {
   }
   const [select, setSelect] = useState(["all"]);
   function onSelect(level: number, value: string) {
-    console.log(level, value);
     setSelect((prev) => {
       const prevCp = [...prev];
-      prevCp[level!] = value;
-      console.log(prevCp);
-      return prevCp;
+      let newPath = [];
+      if (level === 0) {
+        newPath[level] = value;
+      } else {
+        newPath = prevCp;
+        newPath[level!] = value;
+      }
+      return newPath;
     });
   }
   function onSearch() {
-    console.log(pathName, pathName !== "/marketplace");
     updateCategory?.(select);
     updateSearch?.(input);
 
@@ -36,12 +39,12 @@ function SearchWithCategory() {
     }
   }
   return (
-    <div className="flex relative h-14 w-[600px] rounded-full bg-tertiary mx-2">
+    <div className="flex relative h-12 w-[80vw] sm:w-[35vw] rounded-full bg-tertiary ml-2">
       <SearchInput input={input} onInput={onInput} />
-      <div className="w-[1px] h-10 mt-2 bg-gray-700"></div>
+      <div className="w-[1px] h-10 m-1 bg-gray-700"></div>
       <SelectCategory select={select} onSelect={onSelect} />
-      <div className="absolute right-1 my-[5px]">
-        <Button variants="primary">
+      <div className="absolute right-1 mt-[3px] ">
+        <Button variants="primary" className="h-10">
           <div className="[&_svg]:size-7" onClick={onSearch}>
             <SearchIcon />
           </div>

@@ -12,12 +12,13 @@ function byVaraints(variants: "primary" | "outlined" | "ghost" = "primary") {
       return "";
   }
 }
-function Button({ children, variants }: ButtonProps) {
+function Button({ children, variants, className = "", ...rest }: ButtonProps) {
   return (
     <button
+      {...rest}
       className={`${byVaraints(
         variants
-      )} inline-flex min-w-11 h-11 items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0`}
+      )} ${className} inline-flex min-w-10 h-10 items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0`}
     >
       {children}
     </button>
