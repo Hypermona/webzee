@@ -22,7 +22,7 @@ function Header() {
         </Button>
       </div>
       <div className="items-center gap-3 hidden sm:flex">
-        <Link href={"/"}>List your creation</Link>
+        <Link href={"/marketplace"}>List your creation</Link>
         <Button variants="ghost">
           <div className="[&_svg]:size-[15px]">
             <Globe />
